@@ -10,7 +10,7 @@ from pathlib import Path
 static_path = os.path.join(os.path.dirname(__file__), Path("./static"))
 
 app = Flask(__name__, static_folder=static_path, static_url_path="/", template_folder=static_path)
-logging.getLogger('werkzeug').disabled = True
+logging.getLogger('werkzeug').disabled = False
 
 @app.route("/", methods=["GET"])
 def index():

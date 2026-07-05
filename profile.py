@@ -7,12 +7,28 @@ from .utils.datastream.input_data_stream import InputDataStream
 from .utils.pets.rpc_response import RpcResponse
 from .utils.pets.user_info import UserInfo
 from .utils.pets.types import RpcOwnedItem
+from .utils.share import BitSet, NetworkUid
+from .utils.datatypes import MultiTypeMap
 
 class Profile:
     def __init__(self) -> None:
-        self.cash: int = 0
-        self.new_house_data: Optional[Dict[str, int]] = None
-        self.user: Optional[UserInfo] = None
+        self.cash: int = 1000
+        self.new_house_data: Optional[Dict[str, int]] = {
+            "cashRoomsCount": 0,
+            "cashGardensCount": 0,
+            "itemHash": 0
+        }
+        self.user: Optional[UserInfo] = UserInfo(
+            id=NetworkUid(2, "100002618463689", 0),
+            profileFields=7,
+            ownedItems=[],
+            completedSets=[],
+            tutorialMask=BitSet(),
+            achievementsMask=BitSet(),
+            recipesMask=BitSet(),
+            questTrackers=[],
+            userProperties=MultiTypeMap()
+        )
         self.friends: List[UserInfo] = []
         self.loaded_file: Optional[Path] = None
 
@@ -33,6 +49,7 @@ class Profile:
         self.cash = response.readUintvar31()
         self.new_house_data = response.readNewHouseData()
         self.user = response.readUserInfo()
+        self.user.id = NetworkUid(2, "100002618463689", 0)
         try:
             self.friends = response.readArray(response.readUserInfo)
         except (EOFError, ValueError):

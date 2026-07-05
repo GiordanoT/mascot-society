@@ -79,7 +79,8 @@ def handle_save_player_profile(stream:InputDataStream, context={}) -> bytes:
     response.writeUintvar32(0)
     response.writeBoolean(0)
     response.writeDailyBonusInfo(DailyBonusInfo())
-    response.writeUintvar31(audited_changes[0].saveVersion)
+    save_version = audited_changes[0].saveVersion if audited_changes else 0
+    response.writeUintvar31(save_version)
     response.writeArray([], response.writeOwnedItem)
     response.writeUintvar31(0)
     response.writeUintvar31(0)
